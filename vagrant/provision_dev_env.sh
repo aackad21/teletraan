@@ -2,14 +2,10 @@
 #
 # This script takes a standard ubuntu box and installs all the software needed to run teletraan locally.
 
-# Add Java 8 repo
-add-apt-repository ppa:webupd8team/java
-
 apt-get update
 
-# Accept license agreement and install java
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-apt-get install -y oracle-java8-installer 
+# Install OpenJDK 21
+apt-get install -y openjdk-21-jdk
 
 # Install dev env
 apt-get install -y maven python python-setuptools python-pip python-virtualenv python-dev
