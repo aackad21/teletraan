@@ -18,7 +18,7 @@ package com.pinterest.deployservice.db;
 import com.pinterest.deployservice.common.CommonUtils;
 import com.pinterest.deployservice.dao.UtilDAO;
 import java.sql.Connection;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.slf4j.Logger;

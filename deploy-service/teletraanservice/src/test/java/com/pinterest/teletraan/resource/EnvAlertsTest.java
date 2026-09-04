@@ -44,10 +44,10 @@ import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.bean.UserPrincipal;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -122,7 +122,7 @@ public class EnvAlertsTest {
     public void alertsTriggered() throws Exception {
         EnvAlerts envAlerts = new EnvAlerts(context);
         envAlerts.setAlertContextBuilder(alertContextBuilder);
-        recent.setStart_date(DateTime.now().minusMinutes(5).getMillis());
+        recent.setStart_date(Instant.now().minusSeconds(300).toEpochMilli());
 
         // Test case 1, not in range, no actions
         Response resp =
@@ -132,7 +132,7 @@ public class EnvAlertsTest {
                         10,
                         "markbadbuild rollback",
                         sc,
-                        createAlertBody(DateTime.now().minusSeconds(1), true));
+                        createAlertBody(Instant.now().minusSeconds(1), true));
         assertEquals(200, resp.getStatus());
         HashMap entity = (HashMap) resp.getEntity();
         assertEquals(0, entity.size());
@@ -145,7 +145,7 @@ public class EnvAlertsTest {
                         600,
                         "markbadbuild rollback",
                         sc,
-                        createAlertBody(DateTime.now().minusSeconds(1), true));
+                        createAlertBody(Instant.now().minusSeconds(1), true));
         assertEquals(200, resp.getStatus());
         entity = (HashMap) resp.getEntity();
         assertEquals(2, entity.size());
@@ -166,7 +166,7 @@ public class EnvAlertsTest {
                         600,
                         "markbadbuild rollback",
                         sc,
-                        createAlertBody(DateTime.now().minusSeconds(1), true));
+                        createAlertBody(Instant.now().minusSeconds(1), true));
         assertEquals(200, resp.getStatus());
         entity = (HashMap) resp.getEntity();
         assertEquals(2, entity.size());
@@ -176,9 +176,9 @@ public class EnvAlertsTest {
                 ((TagBean) entity.get(MarkBadBuildAction.class.getName())).getTarget_id());
     }
 
-    private String createAlertBody(DateTime triggeredTime, boolean triggered) {
+    private String createAlertBody(Instant triggeredTime, boolean triggered) {
         return String.format(
                 "alert_name=alert&triggered=%s&triggered_date=%f",
-                triggered, triggeredTime.getMillis() / 1000.0);
+                triggered, triggeredTime.toEpochMilli() / 1000.0);
     }
 }

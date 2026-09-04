@@ -24,7 +24,7 @@ import com.pinterest.deployservice.db.DatabaseUtil;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.Map;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
 
 @JsonTypeName("zkmysql")

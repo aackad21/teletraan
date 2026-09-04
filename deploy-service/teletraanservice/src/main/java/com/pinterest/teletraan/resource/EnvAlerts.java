@@ -47,13 +47,14 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +138,7 @@ public class EnvAlerts {
             return Response.status(304).build();
         }
 
-        if (alert.getTriggeredDate().plusMinutes(5).isBefore(DateTime.now())) {
+        if (alert.getTriggeredDate().plus(5, ChronoUnit.MINUTES).isBefore(Instant.now())) {
             LOG.info("Alert has been delayed too much. Ignore it");
             return Response.status(304).build();
         }
@@ -154,7 +155,9 @@ public class EnvAlerts {
         DeployBean lastDeploy = deployHandler.getDeploySafely(environBean.getDeploy_id());
 
         boolean inWindow =
-                DateTime.now().minusSeconds(actionWindow).isBefore(lastDeploy.getStart_date());
+                Instant.now()
+                        .minusSeconds(actionWindow)
+                        .isBefore(Instant.ofEpochMilli(lastDeploy.getStart_date()));
         boolean shouldPerformAction =
                 environBean.getState() == EnvironState.NORMAL
                         && (lastDeploy.getState() == DeployState.SUCCEEDING

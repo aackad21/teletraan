@@ -21,7 +21,7 @@ import com.pinterest.deployservice.bean.TagSyncState;
 import com.pinterest.deployservice.bean.UpdateStatement;
 import com.pinterest.deployservice.dao.DeployConstraintDAO;
 import java.util.List;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;

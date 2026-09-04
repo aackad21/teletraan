@@ -17,7 +17,7 @@ package com.pinterest.deployservice.db;
 
 import com.pinterest.deployservice.dao.GroupDAO;
 import java.util.List;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 
 public class DBGroupDAOImpl implements GroupDAO {

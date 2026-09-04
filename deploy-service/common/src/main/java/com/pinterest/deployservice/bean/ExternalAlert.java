@@ -15,7 +15,7 @@
  */
 package com.pinterest.deployservice.bean;
 
-import org.joda.time.DateTime;
+import java.time.Instant;
 
 /*
 alert_name=response+codes&
@@ -25,8 +25,8 @@ triggered_date=1510165897.62&empty_data_untriggered_date=None&empty_data_trigger
 public class ExternalAlert {
     private String name;
     private boolean triggered;
-    private DateTime triggeredDate;
-    private DateTime unTriggeredDate;
+    private Instant triggeredDate;
+    private Instant unTriggeredDate;
     private boolean emptyDataTriggered;
     private String id;
 
@@ -46,19 +46,19 @@ public class ExternalAlert {
         this.triggered = triggered;
     }
 
-    public DateTime getTriggeredDate() {
+    public Instant getTriggeredDate() {
         return triggeredDate;
     }
 
-    public void setTriggeredDate(DateTime triggeredDate) {
+    public void setTriggeredDate(Instant triggeredDate) {
         this.triggeredDate = triggeredDate;
     }
 
-    public DateTime getUnTriggeredDate() {
+    public Instant getUnTriggeredDate() {
         return unTriggeredDate;
     }
 
-    public void setUnTriggeredDate(DateTime unTriggeredDate) {
+    public void setUnTriggeredDate(Instant unTriggeredDate) {
         this.unTriggeredDate = unTriggeredDate;
     }
 

@@ -22,7 +22,7 @@ import com.pinterest.deployservice.bean.SetClause;
 import com.pinterest.deployservice.bean.UpdateStatement;
 import com.pinterest.deployservice.dao.HostTagDAO;
 import java.util.List;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;

@@ -21,7 +21,7 @@ import com.pinterest.deployservice.db.DatabaseUtil;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.Map;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 @JsonTypeName("mysql")
 public class MysqlDataSourceFactory implements DataSourceFactory {

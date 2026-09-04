@@ -15,16 +15,18 @@
  */
 package com.pinterest.deployservice.db;
 
-import com.ibatis.common.jdbc.ScriptRunner;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import org.apache.commons.dbcp.BasicDataSource;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.ext.ScriptUtils;
 
 public class DBUtils {
     private static final String MYSQL_IMAGE_NAME = "mysql:8.0-oracle";
@@ -74,15 +76,8 @@ public class DBUtils {
 
     private static void runMigrations(BasicDataSource dataSource) throws IOException, SQLException {
         Connection conn = dataSource.getConnection();
-        ScriptRunner runner = new ScriptRunner(conn, false, true);
-        runner.runScript(
-                new BufferedReader(
-                        new InputStreamReader(
-                                DBUtils.class.getResourceAsStream("/sql/cleanup.sql"))));
-        runner.runScript(
-                new BufferedReader(
-                        new InputStreamReader(
-                                DBUtils.class.getResourceAsStream("/sql/deploy.sql"))));
+        runScript(conn, "/sql/cleanup.sql");
+        runScript(conn, "/sql/deploy.sql");
         conn.prepareStatement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));")
                 .execute();
 
@@ -91,8 +86,7 @@ public class DBUtils {
         while (true) {
             String scriptName = String.format("/sql/schema-update-%d.sql", version);
             try {
-                runner.runScript(
-                        new InputStreamReader(DBUtils.class.getResourceAsStream(scriptName)));
+                runScript(conn, scriptName);
             } catch (Exception e) {
                 if (executed == 0) {
                     throw new RuntimeException(
@@ -104,6 +98,32 @@ public class DBUtils {
             executed++;
         }
         conn.close();
+    }
+
+    private static void runScript(Connection conn, String resource)
+            throws IOException, SQLException {
+        InputStream in = DBUtils.class.getResourceAsStream(resource);
+        if (in == null) {
+            throw new IOException("Missing SQL script " + resource);
+        }
+        String script;
+        try (InputStream is = in) {
+            script = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+        List<String> statements = new ArrayList<>();
+        ScriptUtils.splitSqlScript(
+                resource,
+                script,
+                ScriptUtils.DEFAULT_STATEMENT_SEPARATOR,
+                ScriptUtils.DEFAULT_COMMENT_PREFIX,
+                ScriptUtils.DEFAULT_BLOCK_COMMENT_START_DELIMITER,
+                ScriptUtils.DEFAULT_BLOCK_COMMENT_END_DELIMITER,
+                statements);
+        try (Statement stmt = conn.createStatement()) {
+            for (String statement : statements) {
+                stmt.execute(statement);
+            }
+        }
     }
 
     private static void setUpDataSource() throws IOException, SQLException {

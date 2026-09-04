@@ -18,7 +18,7 @@ package com.pinterest.deployservice.db;
 import com.pinterest.deployservice.bean.PindeployBean;
 import com.pinterest.deployservice.bean.SetClause;
 import com.pinterest.deployservice.dao.PindeployDAO;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;

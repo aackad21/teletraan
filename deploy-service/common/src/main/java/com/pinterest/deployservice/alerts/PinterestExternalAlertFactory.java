@@ -18,10 +18,10 @@ package com.pinterest.deployservice.alerts;
 import com.pinterest.deployservice.bean.ExternalAlert;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +47,13 @@ public class PinterestExternalAlertFactory extends ExternalAlertFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(PinterestExternalAlertFactory.class);
 
-    private static DateTime tryGetDate(Map<String, String> nvp, String key) {
-        DateTime ret = null;
+    private static Instant tryGetDate(Map<String, String> nvp, String key) {
+        Instant ret = null;
         if (nvp.containsKey(key)) {
             String strVal = nvp.get(key);
             if (!StringUtils.equals("None", strVal)) {
                 double d = 1000 * Double.parseDouble(strVal);
-                ret = new DateTime().withMillis((long) d);
+                ret = Instant.ofEpochMilli((long) d);
             }
         }
         return ret;
@@ -83,11 +83,11 @@ public class PinterestExternalAlertFactory extends ExternalAlertFactory {
                 alert.setName(nvp.get("alert_name"));
                 alert.setId(nvp.get("alert_id"));
                 alert.setTriggered(Boolean.parseBoolean(nvp.get("triggered").toLowerCase()));
-                DateTime triggeredDate = tryGetDate(nvp, "triggered_date");
+                Instant triggeredDate = tryGetDate(nvp, "triggered_date");
                 if (triggeredDate != null) {
                     alert.setTriggeredDate(triggeredDate);
                 }
-                DateTime untriggeredDate = tryGetDate(nvp, "untriggered_date");
+                Instant untriggeredDate = tryGetDate(nvp, "untriggered_date");
                 if (untriggeredDate != null) {
                     alert.setUnTriggeredDate(untriggeredDate);
                 }

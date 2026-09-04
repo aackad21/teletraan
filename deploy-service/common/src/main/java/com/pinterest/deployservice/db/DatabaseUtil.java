@@ -18,9 +18,10 @@ package com.pinterest.deployservice.db;
 import com.pinterest.deployservice.bean.UpdateStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
 public class DatabaseUtil {
 
     public static final int MAX_WAIT_TIME_FOR_CONN_IN_MS = 200;
-    public static final String MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String MYSQL_JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseUtil.class);
 
     public static BasicDataSource createMysqlDataSource(
@@ -72,22 +73,6 @@ public class DatabaseUtil {
                 connectionProperties);
     }
 
-    // Embedded mysql source, for unit test only
-    public static BasicDataSource createMXJDataSource(String dbName, String baseDir, int port) {
-        String url =
-                String.format(
-                        "jdbc:mysql:mxj://localhost:%d/%s?server"
-                                + ".basedir=%s&createDatabaseIfNotExist=true&server.initialize-user=true",
-                        port, dbName, baseDir);
-        return createDataSource(
-                MYSQL_JDBC_DRIVER,
-                url,
-                "tester",
-                "passwd",
-                "0:8:8:0",
-                MAX_WAIT_TIME_FOR_CONN_IN_MS);
-    }
-
     public static BasicDataSource createLocalDataSource(String url) {
         return createDataSource(
                 MYSQL_JDBC_DRIVER, url, "root", "", "0:8:8:0", MAX_WAIT_TIME_FOR_CONN_IN_MS, null);
@@ -100,7 +85,7 @@ public class DatabaseUtil {
      * @param user the user name to connect to MySQL as.
      * @param passwd the password for the corresponding MySQL user.
      * @param poolSize the connection pool size string, in the format of
-     *     initialSize:maxActive:maxIdle:minIdle.
+     *     initialSize:maxTotal:maxIdle:minIdle.
      * @param maxWaitInMillis the max wait time in milliseconds to get a connection from the pool.
      * @return a BasicDataSource for the target MySQL instance.
      */
@@ -132,10 +117,10 @@ public class DatabaseUtil {
         dataSource.setDefaultReadOnly(false);
 
         // poolSize parsing, the poolsize string passed in the following format
-        // initialSize:maxActive:maxIdle:minIdle
+        // initialSize:maxTotal:maxIdle:minIdle
         String[] sizeStrs = poolSize.split(":");
         dataSource.setInitialSize(Integer.parseInt(sizeStrs[0]));
-        dataSource.setMaxActive(Integer.parseInt(sizeStrs[1]));
+        dataSource.setMaxTotal(Integer.parseInt(sizeStrs[1]));
         dataSource.setMaxIdle(Integer.parseInt(sizeStrs[2]));
         dataSource.setMinIdle(Integer.parseInt(sizeStrs[3]));
 
@@ -143,11 +128,11 @@ public class DatabaseUtil {
         dataSource.setTestOnBorrow(true);
         dataSource.setTestOnReturn(false);
         dataSource.setTestWhileIdle(true);
-        dataSource.setMinEvictableIdleTimeMillis(5 * 60 * 1000);
-        dataSource.setTimeBetweenEvictionRunsMillis(3 * 60 * 1000);
+        dataSource.setMinEvictableIdle(Duration.ofMinutes(5));
+        dataSource.setDurationBetweenEvictionRuns(Duration.ofMinutes(3));
         // dataSource.setNumTestsPerEvictionRun(3);
-        // max wait in milliseconds for a connection.
-        dataSource.setMaxWait(maxWaitInMillis);
+        // max wait for a connection.
+        dataSource.setMaxWait(Duration.ofMillis(maxWaitInMillis));
 
         if (connectionProperties != null) {
             for (Map.Entry<String, String> entry : connectionProperties.entrySet()) {
