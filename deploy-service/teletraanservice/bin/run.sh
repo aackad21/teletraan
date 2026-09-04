@@ -19,10 +19,9 @@ CONFIG_FILE=${ROOT_DIR}/bin/server.yaml
 PID_FILE=${HOME}/teletraan.pid
 ACTION="run"
 JAVA_OPTS="-server -Xmx1024m -Xms1024m \
--verbosegc -Xloggc:/tmp/gc.log -XX:ErrorFile=/tmp/jvm_error.log \
--XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintClassHistogram \
--XX:+HeapDumpOnOutOfMemoryError -XX:+UseConcMarkSweepGC -XX:+UseParNewGC \
--XX:ConcGCThreads=7 -XX:ParallelGCThreads=7"
+-Xlog:gc*,gc+heap=debug:file=/tmp/gc.log:time,uptime,level,tags -XX:ErrorFile=/tmp/jvm_error.log \
+-XX:+HeapDumpOnOutOfMemoryError \
+-XX:ParallelGCThreads=7"
 JAVA_CMD="java"
 if [ "x$JAVA_HOME" != "x" ]; then JAVA_CMD=${JAVA_HOME}/bin/java; fi
 
