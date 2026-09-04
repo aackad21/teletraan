@@ -16,7 +16,7 @@
 package com.pinterest.deployservice.alerts;
 
 import com.pinterest.deployservice.bean.ExternalAlert;
-import org.joda.time.DateTime;
+import java.time.Instant;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,6 @@ class PinterestExternalAlertFactoryTest {
         Assertions.assertTrue(alert.isTriggered());
         Assertions.assertFalse(alert.isEmptyDataTriggered());
         Assertions.assertEquals(alert.getId(), "-1");
-        Assertions.assertEquals(
-                alert.getTriggeredDate(), new DateTime().withMillis(1510165897620L));
+        Assertions.assertEquals(alert.getTriggeredDate(), Instant.ofEpochMilli(1510165897620L));
     }
 }

@@ -18,10 +18,10 @@ package com.pinterest.deployservice.dao;
 import com.pinterest.deployservice.bean.DeployBean;
 import com.pinterest.deployservice.bean.DeployQueryResultBean;
 import com.pinterest.deployservice.bean.UpdateStatement;
+import com.pinterest.deployservice.common.TimeInterval;
 import com.pinterest.deployservice.db.DeployQueryFilter;
 import java.sql.SQLException;
 import java.util.List;
-import org.joda.time.Interval;
 
 /** A collection of methods to help read table DEPLOYS */
 public interface DeployDAO {
@@ -40,10 +40,12 @@ public interface DeployDAO {
     void insert(DeployBean deployBean) throws Exception;
 
     // Return upto size number of ACCEPTED deploy whose build publish time is after after
-    List<DeployBean> getAcceptedDeploys(String envId, Interval interval, int size) throws Exception;
+    List<DeployBean> getAcceptedDeploys(String envId, TimeInterval interval, int size)
+            throws Exception;
 
     // Return ACCEPTED deploy whose suc_date is before before and build publish time is after after
-    List<DeployBean> getAcceptedDeploysDelayed(String envId, Interval interval) throws Exception;
+    List<DeployBean> getAcceptedDeploysDelayed(String envId, TimeInterval interval)
+            throws Exception;
 
     // Return upto size number of ACCEPTED deploy whose suc_date is before before and build publish
     // time is after after

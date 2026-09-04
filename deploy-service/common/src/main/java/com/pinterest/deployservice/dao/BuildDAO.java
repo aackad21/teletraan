@@ -17,9 +17,9 @@ package com.pinterest.deployservice.dao;
 
 import com.google.common.base.Optional;
 import com.pinterest.deployservice.bean.BuildBean;
+import com.pinterest.deployservice.common.TimeInterval;
 import java.util.Collection;
 import java.util.List;
-import org.joda.time.Interval;
 
 /** A collection of methods to help interact with table BUILDS */
 public interface BuildDAO {
@@ -46,8 +46,8 @@ public interface BuildDAO {
     List<String> getBranches(String buildName) throws Exception;
 
     // Return up to size number of builds whose publish time is after after
-    List<BuildBean> getAcceptedBuilds(String buildName, String branch, Interval interval, int limit)
-            throws Exception;
+    List<BuildBean> getAcceptedBuilds(
+            String buildName, String branch, TimeInterval interval, int limit) throws Exception;
 
     // Return all distinct build names
     List<String> getAllBuildNames() throws Exception;

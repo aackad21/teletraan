@@ -25,7 +25,7 @@ import com.pinterest.deployservice.bean.NormandieStatus;
 import com.pinterest.deployservice.dao.HostAgentDAO;
 import java.util.List;
 import java.util.UUID;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -21,12 +21,13 @@ import com.pinterest.deployservice.bean.DeployQueryResultBean;
 import com.pinterest.deployservice.bean.SetClause;
 import com.pinterest.deployservice.bean.UpdateStatement;
 import com.pinterest.deployservice.common.StateMachines;
+import com.pinterest.deployservice.common.TimeInterval;
 import com.pinterest.deployservice.dao.DeployDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -34,7 +35,6 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.Interval;
 
 public class DBDeployDAOImpl implements DeployDAO {
 
@@ -196,7 +196,7 @@ public class DBDeployDAOImpl implements DeployDAO {
     }
 
     @Override
-    public List<DeployBean> getAcceptedDeploys(String envId, Interval interval, int size)
+    public List<DeployBean> getAcceptedDeploys(String envId, TimeInterval interval, int size)
             throws Exception {
         ResultSetHandler<List<DeployBean>> h = new BeanListHandler<>(DeployBean.class);
         String typesClause =
@@ -213,7 +213,7 @@ public class DBDeployDAOImpl implements DeployDAO {
     }
 
     @Override
-    public List<DeployBean> getAcceptedDeploysDelayed(String envId, Interval interval)
+    public List<DeployBean> getAcceptedDeploysDelayed(String envId, TimeInterval interval)
             throws Exception {
         ResultSetHandler<List<DeployBean>> h = new BeanListHandler<>(DeployBean.class);
         return new QueryRunner(dataSource)

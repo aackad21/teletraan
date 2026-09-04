@@ -45,6 +45,7 @@ import com.pinterest.deployservice.common.Constants;
 import com.pinterest.deployservice.common.DeployInternalException;
 import com.pinterest.deployservice.common.InvalidBuildException;
 import com.pinterest.deployservice.common.StateMachines;
+import com.pinterest.deployservice.common.TimeInterval;
 import com.pinterest.deployservice.common.WebhookDataFactory;
 import com.pinterest.deployservice.dao.AgentDAO;
 import com.pinterest.deployservice.dao.BuildDAO;
@@ -69,10 +70,8 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.Interval;
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -674,11 +673,12 @@ public class DeployHandler implements DeployHandlerInterface {
     }
 
     public List<DeployBean> getDeployCandidates(
-            String envId, Interval interval, int size, boolean onlyGoodBuilds) throws Exception {
+            String envId, TimeInterval interval, int size, boolean onlyGoodBuilds)
+            throws Exception {
         LOG.info(
                 "Search Deploy candidates between {} and {} for environment {}",
-                interval.getStart().toString(ISODateTimeFormat.dateTime()),
-                interval.getEnd().toString(ISODateTimeFormat.dateTime()),
+                TimeInterval.format(interval.getStart()),
+                TimeInterval.format(interval.getEnd()),
                 envId);
         List<DeployBean> taggedGoodDeploys = new ArrayList<>();
 
