@@ -22,10 +22,10 @@ import com.pinterest.deployservice.dao.EnvironDAO;
 import com.pinterest.deployservice.dao.PindeployDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import io.swagger.annotations.*;
-import javax.annotation.security.RolesAllowed;
-import javax.validation.constraints.NotEmpty;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

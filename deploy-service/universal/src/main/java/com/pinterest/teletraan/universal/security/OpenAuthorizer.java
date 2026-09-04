@@ -17,8 +17,8 @@ package com.pinterest.teletraan.universal.security;
 
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import com.pinterest.teletraan.universal.security.bean.TeletraanPrincipal;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import javax.annotation.Nullable;
-import javax.ws.rs.container.ContainerRequestContext;
 
 public class OpenAuthorizer implements TeletraanAuthorizer<TeletraanPrincipal> {
     @Override

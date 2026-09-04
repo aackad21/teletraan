@@ -33,10 +33,10 @@ import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.auth.JSONUnauthorizedHandler;
 import io.dropwizard.auth.chained.ChainedAuthFilter;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import javax.validation.constraints.NotEmpty;
-import javax.ws.rs.container.ContainerRequestFilter;
 import org.apache.commons.lang3.StringUtils;
 
 @JsonTypeName("token")

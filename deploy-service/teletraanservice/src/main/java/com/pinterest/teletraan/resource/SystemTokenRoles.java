@@ -21,11 +21,11 @@ import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import io.swagger.annotations.*;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.MANAGE_SCRIPT_TOKEN)
 @Path("/v1/system/token_roles")

@@ -19,10 +19,10 @@ import com.pinterest.deployservice.bean.UserRolesBean;
 import com.pinterest.deployservice.dao.UserRolesDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -20,8 +20,8 @@ import com.pinterest.deployservice.bean.HotfixBean;
 import com.pinterest.deployservice.dao.HotfixDAO;
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 /**
  * The authentication and authorization resource is extracted based on the hotfix ID present in the

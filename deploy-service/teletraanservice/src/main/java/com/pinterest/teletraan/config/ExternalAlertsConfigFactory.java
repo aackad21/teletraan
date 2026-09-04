@@ -17,8 +17,8 @@ package com.pinterest.teletraan.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pinterest.deployservice.alerts.ExternalAlertFactory;
+import jakarta.validation.constraints.NotNull;
 import java.lang.reflect.Constructor;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

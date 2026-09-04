@@ -19,9 +19,9 @@ import com.pinterest.deployservice.bean.DeployBean;
 import com.pinterest.deployservice.bean.EnvironBean;
 import com.pinterest.deployservice.dao.DeployDAO;
 import com.pinterest.deployservice.dao.EnvironDAO;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 import java.util.Map;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

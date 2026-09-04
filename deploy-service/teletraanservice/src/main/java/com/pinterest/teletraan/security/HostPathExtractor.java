@@ -20,9 +20,9 @@ import com.pinterest.deployservice.bean.EnvironBean;
 import com.pinterest.deployservice.dao.EnvironDAO;
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.sql.SQLException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.container.ContainerRequestContext;
 
 public class HostPathExtractor implements AuthZResourceExtractor {
     private static final String HOST_ID = "hostId";

@@ -19,12 +19,12 @@ import com.pinterest.teletraan.health.GenericHealthCheck;
 import com.pinterest.teletraan.resource.Pings;
 import com.pinterest.teletraan.universal.security.PrincipalNameInjector;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfoFeature;
-import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
+import io.dropwizard.core.Application;
+import io.dropwizard.core.setup.Bootstrap;
+import io.dropwizard.core.setup.Environment;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 public class TeletraanAgentService extends Application<TeletraanServiceConfiguration> {

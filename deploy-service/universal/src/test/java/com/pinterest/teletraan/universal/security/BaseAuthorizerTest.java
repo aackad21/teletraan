@@ -28,10 +28,10 @@ import com.pinterest.teletraan.universal.security.AuthZResourceExtractor.Extract
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import com.pinterest.teletraan.universal.security.bean.TeletraanPrincipal;
 import com.pinterest.teletraan.universal.security.bean.UserPrincipal;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.util.Collections;
 import javax.annotation.Nullable;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.container.ContainerRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,15 +48,6 @@ class BaseAuthorizerTest {
         context = mock(ContainerRequestContext.class);
         sut = new TestAuthorizer(extractorFactory);
         principal = new UserPrincipal("testUser", Collections.singletonList("group"));
-    }
-
-    @Test
-    void testAuthorizeWithoutContext() {
-        assertThrows(
-                UnsupportedOperationException.class,
-                () -> {
-                    sut.authorize(principal, TEST_ROLE);
-                });
     }
 
     @Test

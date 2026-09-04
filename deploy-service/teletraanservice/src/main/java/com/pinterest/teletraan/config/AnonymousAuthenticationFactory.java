@@ -18,7 +18,7 @@ package com.pinterest.teletraan.config;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.AnonymousAuthFilter;
-import javax.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 
 @JsonTypeName("anonymous")
 public class AnonymousAuthenticationFactory implements AuthenticationFactory {

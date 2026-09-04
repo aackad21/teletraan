@@ -16,9 +16,9 @@
 package com.pinterest.teletraan.universal.security;
 
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.container.ContainerRequestContext;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)

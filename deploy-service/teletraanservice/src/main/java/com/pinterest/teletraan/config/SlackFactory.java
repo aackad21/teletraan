@@ -21,7 +21,7 @@ import com.pinterest.deployservice.chat.ChatManager;
 import com.pinterest.deployservice.chat.SlackChatManager;
 import com.pinterest.deployservice.common.KeyReader;
 import com.pinterest.deployservice.common.KeyReaderFactory;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 @JsonTypeName("slack")
 public class SlackFactory implements ChatFactory {

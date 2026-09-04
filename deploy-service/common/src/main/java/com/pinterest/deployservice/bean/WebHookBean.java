@@ -15,7 +15,7 @@
  */
 package com.pinterest.deployservice.bean;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class WebHookBean {

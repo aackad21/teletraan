@@ -20,9 +20,9 @@ import com.pinterest.deployservice.bean.BuildBean;
 import com.pinterest.deployservice.dao.BuildDAO;
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.util.HashMap;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.container.ContainerRequestContext;
 
 public class BuildPathExtractor implements AuthZResourceExtractor {
     private static final String BUILD_ID = "id";

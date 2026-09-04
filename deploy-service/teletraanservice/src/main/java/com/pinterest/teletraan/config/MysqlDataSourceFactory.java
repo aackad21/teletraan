@@ -18,9 +18,9 @@ package com.pinterest.teletraan.config;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pinterest.deployservice.db.DatabaseUtil;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.Map;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import org.apache.commons.dbcp.BasicDataSource;
 
 @JsonTypeName("mysql")

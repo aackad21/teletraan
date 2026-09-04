@@ -11,19 +11,22 @@
     <inceptionYear>2014</inceptionYear>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <encoding>UTF-8</encoding>
         <project.build_id.sourceEncoding>UTF-8</project.build_id.sourceEncoding>
         <micrometer.version>1.11.3</micrometer.version>
-        <dropwizard.version>2.1.11</dropwizard.version>
-        <junit-jupiter.version>5.10.1</junit-jupiter.version>
-        <googleJavaFormat.version>1.7</googleJavaFormat.version>
-        <spotless.version>2.30.0</spotless.version>
+        <dropwizard.version>4.0.17</dropwizard.version>
+        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+        <jakarta.mail.version>2.0.5</jakarta.mail.version>
+        <swagger.version>2.2.41</swagger.version>
+        <googleJavaFormat.version>1.28.0</googleJavaFormat.version>
+        <spotless.version>2.46.1</spotless.version>
         <okhttp.version>4.12.0</okhttp.version>
-        <lombok.version>1.18.28</lombok.version>
-        <aspectj.version>1.9.7</aspectj.version>
-        <aspectj-maven-plugin.version>1.15.0</aspectj-maven-plugin.version>
+        <lombok.version>1.18.42</lombok.version>
+        <aspectj.version>1.9.24</aspectj.version>
+        <aspectj-maven-plugin.version>1.14.1</aspectj-maven-plugin.version>
         <source_dir>${maven.repo.local}/com/pinterest/teletraan/${project.artifactId}/${project.version}</source_dir>
     </properties>
 
@@ -53,6 +56,26 @@
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>2.3.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>angus-mail</artifactId>
+                <version>${jakarta.mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-jaxrs2-jakarta</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.dropwizard</groupId>
@@ -85,7 +108,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -107,12 +129,19 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.9</version>
+                    <version>0.8.13</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
+                    <groupId>dev.aspectj</groupId>
                     <artifactId>aspectj-maven-plugin</artifactId>
                     <version>${aspectj-maven-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjtools</artifactId>
+                            <version>${aspectj.version}</version>
+                        </dependency>
+                    </dependencies>
                     <executions>
                         <execution>
                             <id>default-compile</id>
@@ -139,9 +168,9 @@
                                 <artifactId>micrometer-core</artifactId>
                             </weaveDependency>
                         </weaveDependencies>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
-                        <complianceLevel>${maven.compiler.target}</complianceLevel>
+                        <source>${maven.compiler.release}</source>
+                        <target>${maven.compiler.release}</target>
+                        <complianceLevel>${maven.compiler.release}</complianceLevel>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -149,9 +178,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.14.0</version>
                     <configuration>
-                        <release>8</release>
-                        <source>8</source>
-                        <target>8</target>
+                        <release>${maven.compiler.release}</release>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -187,7 +214,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
+                    <version>3.5.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

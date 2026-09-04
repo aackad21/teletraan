@@ -27,8 +27,8 @@ import com.pinterest.deployservice.bean.BuildBean;
 import com.pinterest.deployservice.dao.BuildDAO;
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor.ExtractionException;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.NotFoundException;
 import java.sql.SQLException;
-import javax.ws.rs.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

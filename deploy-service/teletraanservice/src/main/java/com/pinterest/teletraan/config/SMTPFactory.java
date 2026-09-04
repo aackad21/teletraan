@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pinterest.deployservice.email.MailManager;
 import com.pinterest.deployservice.email.SMTPMailManagerImpl;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @JsonTypeName("smtp")
 public class SMTPFactory implements EmailFactory {

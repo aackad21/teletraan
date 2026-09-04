@@ -17,7 +17,7 @@ package com.pinterest.teletraan.security;
 
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import javax.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 public class SoxPropertyPathExtractor implements AuthZResourceExtractor {
     private static final String ENV_NAME = "envName";

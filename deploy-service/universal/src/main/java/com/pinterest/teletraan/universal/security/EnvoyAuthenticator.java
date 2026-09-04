@@ -42,6 +42,7 @@ public class EnvoyAuthenticator implements Authenticator<EnvoyCredentials, Telet
     private final Counter envoyAuthFailureCounter =
             AuthMetricsFactory.createAuthNCounter(
                     EnvoyAuthenticator.class, false, PrincipalType.NA);
+
     /**
      * List of principal replacers to be applied to the authenticated principal.
      *

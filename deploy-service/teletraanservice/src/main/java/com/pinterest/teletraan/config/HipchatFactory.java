@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pinterest.deployservice.chat.ChatManager;
 import com.pinterest.deployservice.chat.HipChatManager;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 @JsonTypeName("hipchat")
 public class HipchatFactory implements ChatFactory {

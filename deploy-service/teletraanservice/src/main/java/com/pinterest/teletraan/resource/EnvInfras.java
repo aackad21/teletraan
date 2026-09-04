@@ -32,13 +32,13 @@ import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

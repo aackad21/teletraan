@@ -15,8 +15,8 @@
  */
 package com.pinterest.deployservice.bean;
 
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
-import javax.validation.constraints.NotEmpty;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class MetricsConfigBean {
