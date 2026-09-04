@@ -29,7 +29,9 @@ import com.pinterest.deployservice.scm.SourceControlManagerProxy;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -42,11 +44,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/builds")
-@Api(tags = "Builds")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Builds", description = "BUILD information APIs"),
-        })
+@Tag(name = "Builds", description = "BUILD information APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Builds {
@@ -80,24 +78,22 @@ public class Builds {
 
     @GET
     @Path("/names/{name : [a-zA-Z0-9\\-_]+}/branches")
-    @ApiOperation(
-            value = "Get branches",
-            notes = "Returns a list of the repository branches associated with a given build name",
-            response = String.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get branches",
+            description =
+                    "Returns a list of the repository branches associated with a given build name")
     public List<String> getBranches(
-            @ApiParam(value = "BUILD name", required = true) @PathParam("name") String buildName)
+            @Parameter(description = "BUILD name", required = true) @PathParam("name")
+                    String buildName)
             throws Exception {
         return buildDAO.getBranches(buildName);
     }
 
     @GET
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get build info",
-            notes = "Returns a build object given a build id",
-            response = BuildBean.class)
-    public BuildBean get(@ApiParam(value = "BUILD id", required = true) @PathParam("id") String id)
+    @Operation(summary = "Get build info", description = "Returns a build object given a build id")
+    public BuildBean get(
+            @Parameter(description = "BUILD id", required = true) @PathParam("id") String id)
             throws Exception {
         BuildBean buildBean = buildDAO.getById(id);
         if (buildBean == null) {
@@ -109,12 +105,11 @@ public class Builds {
 
     @GET
     @Path("/{id : [a-zA-Z0-9\\-_]+}/tags")
-    @ApiOperation(
-            value = "Get build info with its tags",
-            notes = "Returns a build object given a build id",
-            response = BuildTagBean.class)
+    @Operation(
+            summary = "Get build info with its tags",
+            description = "Returns a build object given a build id")
     public BuildTagBean getWithTag(
-            @ApiParam(value = "BUILD id", required = true) @PathParam("id") String id)
+            @Parameter(description = "BUILD id", required = true) @PathParam("id") String id)
             throws Exception {
         BuildBean buildBean = buildDAO.getById(id);
         if (buildBean == null) {
@@ -160,10 +155,9 @@ public class Builds {
 
     @GET
     @Path("/tags")
-    @ApiOperation(
-            value = "Get build info along with the build tag info for a given build name",
-            notes = "Return a bean object containing the build and the build tag",
-            response = BuildTagBean.class)
+    @Operation(
+            summary = "Get build info along with the build tag info for a given build name",
+            description = "Return a bean object containing the build and the build tag")
     public List<BuildTagBean> getBuildsWithTags(
             @QueryParam("commit") String scmCommit,
             @QueryParam("name") String buildName,
@@ -188,10 +182,7 @@ public class Builds {
     }
 
     @POST
-    @ApiOperation(
-            value = "Publish a build",
-            notes = "Publish a build given a build object",
-            response = Response.class)
+    @Operation(summary = "Publish a build", description = "Publish a build given a build object")
     @RolesAllowed(TeletraanPrincipalRole.Names.PUBLISHER)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.BUILD,
@@ -199,7 +190,7 @@ public class Builds {
     public Response publish(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "BUILD object", required = true) @Valid BuildBean buildBean)
+            @Parameter(description = "BUILD object", required = true) @Valid BuildBean buildBean)
             throws Exception {
         if (StringUtils.isEmpty(buildBean.getScm())) {
             buildBean.setScm(sourceControlManagerProxy.getDefaultTypeName());
@@ -269,14 +260,14 @@ public class Builds {
 
     @DELETE
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(value = "Delete a build", notes = "Deletes a build given a build id")
+    @Operation(summary = "Delete a build", description = "Deletes a build given a build id")
     @RolesAllowed(TeletraanPrincipalRole.Names.DELETE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.BUILD,
             idLocation = ResourceAuthZInfo.Location.PATH)
     public void delete(
             @Context SecurityContext sc,
-            @ApiParam(value = "BUILD id", required = true) @PathParam("id") String id)
+            @Parameter(description = "BUILD id", required = true) @PathParam("id") String id)
             throws Exception {
         BuildBean buildBean = buildDAO.getById(id);
         if (buildBean == null) {

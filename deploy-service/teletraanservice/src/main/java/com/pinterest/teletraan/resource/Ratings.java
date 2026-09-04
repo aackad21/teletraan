@@ -21,7 +21,7 @@ import com.pinterest.deployservice.handler.RatingsHandler;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -32,7 +32,7 @@ import java.util.Optional;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/ratings")
-@Api(tags = "Ratings")
+@Tag(name = "Ratings")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Ratings {

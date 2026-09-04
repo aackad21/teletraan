@@ -21,7 +21,8 @@ import com.pinterest.deployservice.bean.TeletraanPrincipalRole;
 import com.pinterest.deployservice.dao.EnvironDAO;
 import com.pinterest.deployservice.dao.PindeployDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.ws.rs.*;
@@ -31,11 +32,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/pindeploy")
-@Api(tags = "Pindeploy")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Pindeploy", description = "Pindeploy related APIs"),
-        })
+@Tag(name = "Pindeploy", description = "Pindeploy related APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Pindeploy {
@@ -49,10 +46,9 @@ public class Pindeploy {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get pindeploy related info",
-            notes = "Return is_pindeploy and pipeline given the environment id",
-            response = PindeployBean.class)
+    @Operation(
+            summary = "Get pindeploy related info",
+            description = "Return is_pindeploy and pipeline given the environment id")
     public PindeployBean getPindeployInfo(
             @NotEmpty @QueryParam("envName") String envName,
             @NotEmpty @QueryParam("stageName") String stageName)

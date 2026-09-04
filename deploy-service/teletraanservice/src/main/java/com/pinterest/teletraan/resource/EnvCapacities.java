@@ -30,8 +30,8 @@ import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.TeletraanAuthorizer;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import com.pinterest.teletraan.universal.security.bean.TeletraanPrincipal;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/capacity")
-@Api(tags = "Environments")
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvCapacities {
@@ -85,9 +85,9 @@ public class EnvCapacities {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get the capacities for Group and hosts",
-            notes = "Get the capacities for Group and hosts")
+    @Operation(
+            summary = "Get the capacities for Group and hosts",
+            description = "Get the capacities for Group and hosts")
     public List<String> get(
             @PathParam("envName") String envName,
             @PathParam("stageName") String stageName,
@@ -102,9 +102,9 @@ public class EnvCapacities {
     }
 
     @PUT
-    @ApiOperation(
-            value = "Update the capacities for Group and hosts",
-            notes = "Update the capacities for Group and hosts")
+    @Operation(
+            summary = "Update the capacities for Group and hosts",
+            description = "Update the capacities for Group and hosts")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
@@ -146,9 +146,9 @@ public class EnvCapacities {
     }
 
     @POST
-    @ApiOperation(
-            value = "Create the capacities for Group and hosts",
-            notes = "Create the capacities for Group and hosts")
+    @Operation(
+            summary = "Create the capacities for Group and hosts",
+            description = "Create the capacities for Group and hosts")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
@@ -171,9 +171,9 @@ public class EnvCapacities {
     }
 
     @DELETE
-    @ApiOperation(
-            value = "Delete the capacities for Group and hosts",
-            notes = "Delete the capacities for Group and hosts")
+    @Operation(
+            summary = "Delete the capacities for Group and hosts",
+            description = "Delete the capacities for Group and hosts")
     @RolesAllowed(TeletraanPrincipalRole.Names.DELETE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,

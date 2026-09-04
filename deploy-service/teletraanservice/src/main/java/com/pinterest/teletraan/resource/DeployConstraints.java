@@ -24,7 +24,9 @@ import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import com.pinterest.teletraan.worker.DeployTagWorker;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -39,11 +41,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/deploy_constraint")
-@Api(tags = "Deploy Constraints")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Deploy Constraints", description = "Deploy constraints related APIs"),
-        })
+@Tag(name = "Deploy Constraints", description = "Deploy constraints related APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class DeployConstraints {
@@ -62,10 +60,9 @@ public class DeployConstraints {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get deploy constraint info",
-            notes = "Returns a deploy constraint object given a constraint id",
-            response = DeployConstraintBean.class)
+    @Operation(
+            summary = "Get deploy constraint info",
+            description = "Returns a deploy constraint object given a constraint id")
     public DeployConstraintBean get(
             @PathParam("envName") String envName,
             @PathParam("stageName") String stageName,
@@ -88,7 +85,9 @@ public class DeployConstraints {
     public void update(
             @PathParam("envName") String envName,
             @PathParam("stageName") String stageName,
-            @ApiParam(value = "Deploy Constraint Object to update in database", required = true)
+            @Parameter(
+                            description = "Deploy Constraint Object to update in database",
+                            required = true)
                     @Valid
                     DeployConstraintBean deployConstraintBean,
             @Context SecurityContext sc)

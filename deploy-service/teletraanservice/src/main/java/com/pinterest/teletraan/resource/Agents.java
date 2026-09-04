@@ -21,7 +21,9 @@ import com.pinterest.deployservice.dao.AgentDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -35,11 +37,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/agents")
-@Api(tags = "Agents")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Agents", description = "Deploy agent information APIs"),
-        })
+@Tag(name = "Agents", description = "Deploy agent information APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Agents {
@@ -51,14 +49,14 @@ public class Agents {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get Deploy Agent Host Info",
-            notes = "Returns a list of all the deploy agent objects running on the specified host",
-            response = AgentBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get Deploy Agent Host Info",
+            description =
+                    "Returns a list of all the deploy agent objects running on the specified host")
     @Path("/{hostName : [a-zA-Z0-9\\-_]+}")
     public List<AgentBean> get(
-            @ApiParam(value = "Host name", required = true) @PathParam("hostName") String hostName)
+            @Parameter(description = "Host name", required = true) @PathParam("hostName")
+                    String hostName)
             throws Exception {
         return agentDAO.getByHost(hostName);
     }
@@ -86,7 +84,7 @@ public class Agents {
     @GET
     @Path("/env/{envId : [a-zA-Z0-9\\-_]+}/total")
     public long getCountByEnvName(
-            @ApiParam(value = "Env Id", required = true) @PathParam("envId") String envId)
+            @Parameter(description = "Env Id", required = true) @PathParam("envId") String envId)
             throws Exception {
         return agentDAO.countAgentByEnv(envId);
     }

@@ -25,10 +25,8 @@ import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo.Location;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -40,11 +38,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/host_tags")
-@Api(tags = "Hosts Tags")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Hosts Tags", description = "Hosts Tags related APIs"),
-        })
+@Tag(name = "Hosts Tags", description = "Hosts Tags related APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvHostTags {
@@ -62,10 +56,9 @@ public class EnvHostTags {
     }
 
     @GET
-    @ApiOperation(
-            value = "List all the hosts tags",
-            notes = "Returns a list the host tags in an environment",
-            response = HostTagInfo.class)
+    @Operation(
+            summary = "List all the hosts tags",
+            description = "Returns a list the host tags in an environment")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.PATH)
     public Collection<HostTagInfo> get(
@@ -87,12 +80,11 @@ public class EnvHostTags {
 
     @GET
     @Path("/{tagName : [a-zA-Z0-9\\-:_]+}")
-    @ApiOperation(
-            value =
+    @Operation(
+            summary =
                     "List all the hosts that are tagged with tagName in an environment, and group by tagValue",
-            notes =
-                    "Returns a map group by tagValue and hosts tagged with tagName:tagValue in an environment",
-            response = HostTagInfo.class)
+            description =
+                    "Returns a map group by tagValue and hosts tagged with tagName:tagValue in an environment")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.PATH)
     public Map<String, Collection<HostTagInfo>> get(

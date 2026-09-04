@@ -21,9 +21,9 @@ import com.pinterest.deployservice.dao.WorkerJobDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/infras/job")
-@Api(tags = "Infras")
+@Tag(name = "Infras")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvInfrasJob {
@@ -58,15 +58,14 @@ public class EnvInfrasJob {
             "/{jobId : [0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}}")
     @Timed
     @Counted
-    @ApiOperation(
-            value = "Get status of applying infrastructure configurations",
-            notes = "Get status of applying infrastructure configurations given a job id",
-            response = Response.class)
+    @Operation(
+            summary = "Get status of applying infrastructure configurations",
+            description = "Get status of applying infrastructure configurations given a job id")
     @RolesAllowed(TeletraanPrincipalRole.Names.READ)
     public Response getJob(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Job id", required = true) @PathParam("jobId") String jobId)
+            @Parameter(description = "Job id", required = true) @PathParam("jobId") String jobId)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();
 

@@ -24,11 +24,9 @@ import com.pinterest.deployservice.dao.TagDAO;
 import com.pinterest.deployservice.handler.BuildTagHandler;
 import com.pinterest.deployservice.handler.TagHandler;
 import com.pinterest.teletraan.TeletraanServiceContext;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -53,13 +51,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
-@Api(tags = "Tags")
+@Tag(name = "Tags", description = "Tagging APIs")
 @Path("/v1/tags")
 @Produces(MediaType.APPLICATION_JSON)
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Tags", description = "Tagging APIs"),
-        })
 @Consumes(MediaType.APPLICATION_JSON)
 public class Tags {
     private static final Logger LOG = LoggerFactory.getLogger(Tags.class);
@@ -73,10 +67,7 @@ public class Tags {
 
     @GET
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get tags with a given id",
-            notes = "Return a TagBean objects",
-            response = TagBean.class)
+    @Operation(summary = "Get tags with a given id", description = "Return a TagBean objects")
     public TagBean getById(@PathParam("id") String id) throws Exception {
         TagBean ret = tagDAO.getById(id);
         if (ret == null) {
@@ -88,10 +79,9 @@ public class Tags {
 
     @GET
     @Path("/targets/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get tags applied on a target id",
-            notes = "Return a list of TagBean objects",
-            response = List.class)
+    @Operation(
+            summary = "Get tags applied on a target id",
+            description = "Return a list of TagBean objects")
     public List<TagBean> getByTargetId(@PathParam("id") String targetId) throws Exception {
 
         if (StringUtils.isEmpty(targetId)) {
@@ -105,10 +95,9 @@ public class Tags {
 
     @GET
     @Path("/targets/{id : [a-zA-Z0-9\\-_]+}/latest")
-    @ApiOperation(
-            value = "Get tags applied on a target id",
-            notes = "Return a list of TagBean objects",
-            response = List.class)
+    @Operation(
+            summary = "Get tags applied on a target id",
+            description = "Return a list of TagBean objects")
     public TagBean getLatestByTargetId(@PathParam("id") String targetId) throws Exception {
         if (StringUtils.isEmpty(targetId)) {
             throw new WebApplicationException(
@@ -120,10 +109,9 @@ public class Tags {
 
     @GET
     @Path("/values/{value : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get tags with the given value",
-            notes = "Return a list of TagBean object with given value",
-            response = List.class)
+    @Operation(
+            summary = "Get tags with the given value",
+            description = "Return a list of TagBean object with given value")
     public List<TagBean> getByValue(@PathParam("value") String value) throws Exception {
 
         if (StringUtils.isEmpty(value)) {
@@ -143,14 +131,11 @@ public class Tags {
     }
 
     @POST
-    @ApiOperation(
-            value = "Create a tag",
-            notes = "Create a tag on an object",
-            response = Response.class)
+    @Operation(summary = "Create a tag", description = "Create a tag on an object")
     public Response create(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Tag object", required = true) @Valid TagBean tag)
+            @Parameter(description = "Tag object", required = true) @Valid TagBean tag)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();
         TagBean retEntity = new TagBean();
@@ -177,10 +162,10 @@ public class Tags {
 
     @DELETE
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(value = "Delete a tag", notes = "Deletes a build given a tag id")
+    @Operation(summary = "Delete a tag", description = "Deletes a build given a tag id")
     public void delete(
             @Context SecurityContext sc,
-            @ApiParam(value = "tag id", required = true) @PathParam("id") String id)
+            @Parameter(description = "tag id", required = true) @PathParam("id") String id)
             throws Exception {
         TagBean tagBean = tagDAO.getById(id);
         if (tagBean == null) {

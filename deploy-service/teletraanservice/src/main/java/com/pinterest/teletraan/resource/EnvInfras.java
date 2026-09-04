@@ -29,9 +29,9 @@ import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\\\-_]+}/infras")
-@Api(tags = "Infras")
+@Tag(name = "Infras")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvInfras {
@@ -65,11 +65,10 @@ public class EnvInfras {
     @POST
     @Timed
     @Counted
-    @ApiOperation(
-            value = "Apply infrastructure configurations",
-            notes =
-                    "Apply infrastructure configurations given an environment name, stage name, and configurations",
-            response = Response.class)
+    @Operation(
+            summary = "Apply infrastructure configurations",
+            description =
+                    "Apply infrastructure configurations given an environment name, stage name, and configurations")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
@@ -77,9 +76,9 @@ public class EnvInfras {
     public Response apply(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
             @Valid InfraBean bean)
             throws Exception {
@@ -115,17 +114,16 @@ public class EnvInfras {
     @GET
     @Timed
     @Counted
-    @ApiOperation(
-            value = "Get infrastructure configurations",
-            notes = "Get infrastructure configurations given environment name and stage name",
-            response = InfraBean.class)
+    @Operation(
+            summary = "Get infrastructure configurations",
+            description = "Get infrastructure configurations given environment name and stage name")
     @RolesAllowed(TeletraanPrincipalRole.Names.READ)
     public InfraBean get(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();

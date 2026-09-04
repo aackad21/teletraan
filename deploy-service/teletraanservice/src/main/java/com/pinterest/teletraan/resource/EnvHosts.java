@@ -27,9 +27,9 @@ import com.pinterest.deployservice.handler.EnvironHandler;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/hosts")
-@Api(tags = "Hosts")
+@Tag(name = "Hosts")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvHosts {
@@ -67,15 +67,13 @@ public class EnvHosts {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get hosts for env stage",
-            notes = "Returns a Collections of hosts given an environment and stage",
-            response = HostBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get hosts for env stage",
+            description = "Returns a Collections of hosts given an environment and stage")
     public Collection<HostBean> get(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -84,17 +82,16 @@ public class EnvHosts {
 
     @GET
     @Path("/{hostName : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get host details for stage and host name",
-            notes = "Returns a host given an environment, stage and host name",
-            response = HostBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get host details for stage and host name",
+            description = "Returns a host given an environment, stage and host name")
     public Collection<HostBeanWithStatuses> getHostByHostName(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Host name", required = true) @PathParam("hostName") String hostName)
+            @Parameter(description = "Host name", required = true) @PathParam("hostName")
+                    String hostName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
         return hostDAO.getByEnvIdAndHostName(envBean.getEnv_id(), hostName);
@@ -110,7 +107,7 @@ public class EnvHosts {
             @PathParam("envName") String envName,
             @PathParam("stageName") String stageName,
             @Valid Collection<String> hostIds,
-            @ApiParam(value = "Replace the host or not") @QueryParam("replaceHost")
+            @Parameter(description = "Replace the host or not") @QueryParam("replaceHost")
                     Optional<Boolean> replaceHost)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();

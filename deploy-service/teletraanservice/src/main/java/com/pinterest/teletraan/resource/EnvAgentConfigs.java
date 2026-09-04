@@ -24,9 +24,9 @@ import com.pinterest.deployservice.handler.EnvironHandler;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/agent_configs")
-@Api(value = "/Environments", description = "Environment info APIs")
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvAgentConfigs {
@@ -55,16 +55,14 @@ public class EnvAgentConfigs {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get agent configs",
-            notes =
-                    "Returns a name,value map of environment agent configs given an environment name and stage name",
-            response = String.class,
-            responseContainer = "Map")
+    @Operation(
+            summary = "Get agent configs",
+            description =
+                    "Returns a name,value map of environment agent configs given an environment name and stage name")
     public Map<String, String> get(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -72,9 +70,9 @@ public class EnvAgentConfigs {
     }
 
     @PUT
-    @ApiOperation(
-            value = "Update agent configs",
-            notes =
+    @Operation(
+            summary = "Update agent configs",
+            description =
                     "Updates environment agent configs given an environment name and stage name with a map of "
                             + "name,value agent configs")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
@@ -82,11 +80,11 @@ public class EnvAgentConfigs {
             type = AuthZResource.Type.ENV_STAGE,
             idLocation = ResourceAuthZInfo.Location.PATH)
     public void update(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Map of configs to update with", required = true) @Valid
+            @Parameter(description = "Map of configs to update with", required = true) @Valid
                     Map<String, String> configs,
             @Context SecurityContext sc)
             throws Exception {

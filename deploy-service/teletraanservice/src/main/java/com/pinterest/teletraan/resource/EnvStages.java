@@ -33,9 +33,9 @@ import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo.Location;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import io.micrometer.core.annotation.Counted;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}")
-@Api(tags = "Environments")
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvStages {
@@ -97,14 +97,13 @@ public class EnvStages {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get an environment",
-            notes = "Returns an environment object given environment and stage names",
-            response = EnvironBean.class)
+    @Operation(
+            summary = "Get an environment",
+            description = "Returns an environment object given environment and stage names")
     public EnvironBean get(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean bean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -115,19 +114,19 @@ public class EnvStages {
     }
 
     @PUT
-    @ApiOperation(
-            value = "Update an environment",
-            notes =
+    @Operation(
+            summary = "Update an environment",
+            description =
                     "Update an environment given environment and stage names with a environment object")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.PATH)
     public void update(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Desired Environment object with updates", required = true)
+            @Parameter(description = "Desired Environment object with updates", required = true)
                     EnvironBean environBean)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();
@@ -137,17 +136,17 @@ public class EnvStages {
 
     @PUT
     @Path("/is-sox/{booleanValue}")
-    @ApiOperation(value = "Update an environment/stage's isSox flag")
+    @Operation(summary = "Update an environment/stage's isSox flag")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.SOX_PROPERTY, idLocation = Location.PATH)
     @Counted
     public void updateIsSox(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Is sox flag", required = true) @PathParam("booleanValue")
+            @Parameter(description = "Is sox flag", required = true) @PathParam("booleanValue")
                     boolean isSox)
             throws Exception {
         EnvironBean origBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -171,16 +170,16 @@ public class EnvStages {
     }
 
     @DELETE
-    @ApiOperation(
-            value = "Delete an environment",
-            notes = "Deletes an environment given a environment and stage names")
+    @Operation(
+            summary = "Delete an environment",
+            description = "Deletes an environment given a environment and stage names")
     @RolesAllowed(TeletraanPrincipalRole.Names.DELETE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.PATH)
     public void delete(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();
@@ -189,10 +188,10 @@ public class EnvStages {
     }
 
     @POST
-    @ApiOperation(
-            value = "Sets the external_id on a stage",
-            notes = "Sets the external_id column on a stage given the environment and stage names",
-            response = EnvironBean.class)
+    @Operation(
+            summary = "Sets the external_id on a stage",
+            description =
+                    "Sets the external_id column on a stage given the environment and stage names")
     @Path("/external_id")
     @RolesAllowed({
         TeletraanPrincipalRole.Names.WRITE,
@@ -202,11 +201,11 @@ public class EnvStages {
             type = AuthZResource.Type.ENV_STAGE,
             idLocation = ResourceAuthZInfo.Location.PATH)
     public EnvironBean setExternalId(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "External id", required = true) String externalId)
+            @Parameter(description = "External id", required = true) String externalId)
             throws Exception {
 
         try {

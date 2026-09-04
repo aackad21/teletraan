@@ -33,7 +33,9 @@ import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo.Location;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import com.pinterest.teletraan.universal.security.bean.UserPrincipal;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -52,11 +54,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs")
-@Api(tags = "Environments")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Environments", description = "Environment info APIs"),
-        })
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Environs {
@@ -97,12 +95,11 @@ public class Environs {
 
     @GET
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get environment object",
-            notes = "Returns an environment object given an environment id",
-            response = EnvironBean.class)
+    @Operation(
+            summary = "Get environment object",
+            description = "Returns an environment object given an environment id")
     public EnvironBean get(
-            @ApiParam(value = "Environment id", required = true) @PathParam("id") String id)
+            @Parameter(description = "Environment id", required = true) @PathParam("id") String id)
             throws Exception {
         EnvironBean environBean = environDAO.getById(id);
         if (environBean == null) {
@@ -132,23 +129,20 @@ public class Environs {
 
     @GET
     @Path("/sidecars")
-    @ApiOperation(
-            value = "Get all sidecar environment objects",
-            notes = "Returns a list of sidecar environment objects",
-            response = EnvironBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get all sidecar environment objects",
+            description = "Returns a list of sidecar environment objects")
     public List<EnvironBean> getAllSidecars() throws Exception {
         return environDAO.getAllSidecarEnvs();
     }
 
     @GET
-    @ApiOperation(
-            value = "Get all environment objects",
-            notes = "Returns a list of environment objects related to the given environment name",
-            response = EnvironBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get all environment objects",
+            description =
+                    "Returns a list of environment objects related to the given environment name")
     public List<EnvironBean> getAll(
-            @ApiParam(value = "Environment name", required = true) @QueryParam("envName")
+            @Parameter(description = "Environment name", required = true) @QueryParam("envName")
                     String envName,
             @QueryParam("groupName") String groupName,
             @QueryParam("stageType") String stageType)
@@ -177,16 +171,16 @@ public class Environs {
     }
 
     @POST
-    @ApiOperation(
-            value = "Create environment",
-            notes = "Creates a new environment given an environment object",
-            response = Response.class)
+    @Operation(
+            summary = "Create environment",
+            description = "Creates a new environment given an environment object")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.BODY)
     public Response create(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Environment object to create in database", required = true) @Valid
+            @Parameter(description = "Environment object to create in database", required = true)
+                    @Valid
                     EnvironBean environBean)
             throws Exception {
         try {
@@ -227,9 +221,9 @@ public class Environs {
     @Path("/actions")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(type = AuthZResource.Type.SYSTEM)
-    @ApiOperation(
-            value = "Enable/disable all environments",
-            notes =
+    @Operation(
+            summary = "Enable/disable all environments",
+            description =
                     "Enable/disable all new deploy and configuration changes for every environments")
     public void action(
             @Context SecurityContext sc,

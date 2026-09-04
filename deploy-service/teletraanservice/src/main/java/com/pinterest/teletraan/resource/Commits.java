@@ -22,7 +22,9 @@ import com.pinterest.deployservice.scm.SourceControlManagerProxy;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -31,11 +33,7 @@ import java.util.List;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/commits")
-@Api(tags = "Commits")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Commits", description = "Commit info APIs"),
-        })
+@Tag(name = "Commits", description = "Commit info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Commits {
@@ -51,15 +49,16 @@ public class Commits {
     @Timed
     @Counted
     @Path("{scm : [a-zA-Z0-9\\-_]+}/{repo : [a-zA-Z0-9\\-_/%]+}/{sha : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get commit infos",
-            notes = "Returns a commit object given a repo and commit sha",
-            response = CommitBean.class)
+    @Operation(
+            summary = "Get commit infos",
+            description = "Returns a commit object given a repo and commit sha")
     public CommitBean getCommit(
-            @ApiParam(value = "Commit's scm type, either github or phabricator") @PathParam("scm")
+            @Parameter(description = "Commit's scm type, either github or phabricator")
+                    @PathParam("scm")
                     String scm,
-            @ApiParam(value = "Commit's repo", required = true) @PathParam("repo") String repo,
-            @ApiParam(value = "Commit SHA", required = true) @PathParam("sha") String sha)
+            @Parameter(description = "Commit's repo", required = true) @PathParam("repo")
+                    String repo,
+            @Parameter(description = "Commit SHA", required = true) @PathParam("sha") String sha)
             throws Exception {
         repo = repo.replace("%2F", "/");
         return sourceControlManagerProxy.getCommit(scm, repo, sha);

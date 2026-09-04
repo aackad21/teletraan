@@ -22,8 +22,8 @@ import com.pinterest.deployservice.bean.TeletraanPrincipalRole;
 import com.pinterest.deployservice.dao.ConfigHistoryDAO;
 import com.pinterest.deployservice.dao.EnvironDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -37,7 +37,7 @@ import java.util.List;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/history")
-@Api(tags = "Environments")
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvHistory {
@@ -51,9 +51,9 @@ public class EnvHistory {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get the config history for the environment",
-            notes = "Get the config history for the environment")
+    @Operation(
+            summary = "Get the config history for the environment",
+            description = "Get the config history for the environment")
     public List<ConfigHistoryBean> get(
             @PathParam("envName") String envName,
             @PathParam("stageName") String stageName,
