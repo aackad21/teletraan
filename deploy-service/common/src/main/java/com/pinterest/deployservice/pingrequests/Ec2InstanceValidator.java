@@ -35,7 +35,7 @@ public class Ec2InstanceValidator extends PingRequestValidator {
         if (!StringUtils.startsWith(bean.getHostId(), "i-")) {
             LOG.warn("Ignore invalid id {} for host {}", bean.getHostId(), bean.getHostName());
             throw new DeployInternalException(
-                    String.format("Host id %s is not a valid ec2 instance id", bean.getHostId()),
+                    "Host id %s is not a valid ec2 instance id",
                     StringUtils.defaultString(bean.getHostId()));
         }
 
