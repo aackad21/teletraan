@@ -34,8 +34,8 @@ import com.pinterest.deployservice.handler.DeployHandler;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/alerts")
-@Api("ExternalAlerts")
+@Tag(name = "ExternalAlerts")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 public class EnvAlerts {
@@ -96,10 +96,7 @@ public class EnvAlerts {
     }
 
     @POST
-    @ApiOperation(
-            value = "The alert response",
-            notes = "Return the alert checking result",
-            response = Response.class)
+    @Operation(summary = "The alert response", description = "Return the alert checking result")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,

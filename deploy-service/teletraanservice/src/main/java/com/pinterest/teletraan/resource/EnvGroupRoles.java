@@ -20,7 +20,9 @@ import com.pinterest.deployservice.bean.TeletraanPrincipalRole;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -29,11 +31,7 @@ import java.util.List;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/group_roles")
-@Api(tags = "Group Roles")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Group Roles", description = "Group Roles related APIs"),
-        })
+@Tag(name = "Group Roles", description = "Group Roles related APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvGroupRoles extends GroupRoles {
@@ -44,11 +42,9 @@ public class EnvGroupRoles extends GroupRoles {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get all environment group roles",
-            notes = "Returns a list of GroupRoles objects for the given environment name.",
-            response = GroupRolesBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get all environment group roles",
+            description = "Returns a list of GroupRoles objects for the given environment name.")
     public List<GroupRolesBean> getByResource(@PathParam("envName") String envName)
             throws Exception {
         return super.getByResource(envName, RESOURCE_TYPE);
@@ -56,10 +52,10 @@ public class EnvGroupRoles extends GroupRoles {
 
     @GET
     @Path("/{groupName : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get group role by group and environment name",
-            notes = "Returns a GroupRoles object containing for given group and environment names.",
-            response = GroupRolesBean.class)
+    @Operation(
+            summary = "Get group role by group and environment name",
+            description =
+                    "Returns a GroupRoles object containing for given group and environment names.")
     public GroupRolesBean getByNameAndResource(
             @PathParam("envName") String envName, @PathParam("groupName") String groupName)
             throws Exception {
@@ -68,11 +64,10 @@ public class EnvGroupRoles extends GroupRoles {
 
     @PUT
     @Path("/{groupName : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Update an environment's group role",
-            notes =
-                    "Updates a GroupRoles object for given group and environment names with given GroupRoles object.",
-            response = GroupRolesBean.class)
+    @Operation(
+            summary = "Update an environment's group role",
+            description =
+                    "Updates a GroupRoles object for given group and environment names with given GroupRoles object.")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV, idLocation = ResourceAuthZInfo.Location.PATH)
     public void update(
@@ -84,26 +79,26 @@ public class EnvGroupRoles extends GroupRoles {
     }
 
     @POST
-    @ApiOperation(
-            value = "Create a group role for an environment",
-            notes = "Creates a new GroupRoles object for a given environment name.",
-            response = Response.class)
+    @Operation(
+            summary = "Create a group role for an environment",
+            description = "Creates a new GroupRoles object for a given environment name.")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV, idLocation = ResourceAuthZInfo.Location.PATH)
     public Response create(
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Environment name.", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name.", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "GroupRolesBean object.", required = true) @Valid GroupRolesBean bean)
+            @Parameter(description = "GroupRolesBean object.", required = true) @Valid
+                    GroupRolesBean bean)
             throws Exception {
         return super.create(uriInfo, bean, envName, RESOURCE_TYPE);
     }
 
     @DELETE
     @Path("/{groupName : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Deletes a group role from an environment",
-            notes = "Deletes a GroupRoles object by given group and environment names.")
+    @Operation(
+            summary = "Deletes a group role from an environment",
+            description = "Deletes a GroupRoles object by given group and environment names.")
     @RolesAllowed(TeletraanPrincipalRole.Names.DELETE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV, idLocation = ResourceAuthZInfo.Location.PATH)
     public void delete(

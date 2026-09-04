@@ -560,9 +560,8 @@ public class DeployHandler implements DeployHandlerInterface {
         TagBean tagBean = tagDAO.getLatestByTargetId(envBean.getEnv_id());
         if (tagBean != null && tagBean.getValue() == TagValue.DISABLE_ENV) {
             throw new DeployInternalException(
-                    String.format(
-                            "Can not promote to a disabled env %s/%s",
-                            envBean.getEnv_name(), envBean.getStage_name()));
+                    "Can not promote to a disabled env %s/%s",
+                    envBean.getEnv_name(), envBean.getStage_name());
         }
 
         DeployBean fromDeployBean = getDeploySafely(fromDeployId);
@@ -624,9 +623,8 @@ public class DeployHandler implements DeployHandlerInterface {
             toDeployBean = getLastSucceededDeploy(envBean);
             if (toDeployBean == null) {
                 throw new DeployInternalException(
-                        String.format(
-                                "Could not find last succeeded deploy for env %s/%s",
-                                envBean.getEnv_name(), envBean.getStage_name()));
+                        "Could not find last succeeded deploy for env %s/%s",
+                        envBean.getEnv_name(), envBean.getStage_name());
             }
         } else {
             toDeployBean = getDeploySafely(toDeployId);

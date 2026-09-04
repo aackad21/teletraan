@@ -29,9 +29,9 @@ import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/deploys")
-@Api(tags = "Deploys")
+@Tag(name = "Deploys", description = "Deploy info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvDeploys {
@@ -86,14 +86,13 @@ public class EnvDeploys {
     @Timed
     @Counted
     @Path("/current")
-    @ApiOperation(
-            value = "Get deploy info by environment",
-            notes = "Returns a deploy info object given an environment name and stage name",
-            response = DeployBean.class)
+    @Operation(
+            summary = "Get deploy info by environment",
+            description = "Returns a deploy info object given an environment name and stage name")
     public DeployBean get(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -108,10 +107,9 @@ public class EnvDeploys {
     @Timed
     @Counted
     @Path("/current/actions")
-    @ApiOperation(
-            value = "Take deploy action",
-            notes = "Take an action on a deploy such as RESTART or PAUSE",
-            response = Response.class)
+    @Operation(
+            summary = "Take deploy action",
+            description = "Take an action on a deploy such as RESTART or PAUSE")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
@@ -119,19 +117,21 @@ public class EnvDeploys {
     public Response action(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "ActionType enum selection", required = true)
+            @Parameter(description = "ActionType enum selection", required = true)
                     @NotNull
                     @QueryParam("actionType")
                     ActionType actionType,
-            @ApiParam(value = "Lower bound deploy id", required = true) @QueryParam("fromDeployId")
+            @Parameter(description = "Lower bound deploy id", required = true)
+                    @QueryParam("fromDeployId")
                     String fromDeployId,
-            @ApiParam(value = "Upper bound deploy id", required = true) @QueryParam("toDeployId")
+            @Parameter(description = "Upper bound deploy id", required = true)
+                    @QueryParam("toDeployId")
                     String toDeployId,
-            @ApiParam(value = "Description", required = true) @QueryParam("description")
+            @Parameter(description = "Description", required = true) @QueryParam("description")
                     String description)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -176,21 +176,20 @@ public class EnvDeploys {
     @Timed
     @Counted
     @Path("/hostactions")
-    @ApiOperation(
-            value = "Take a deploy action",
-            notes = "Take an action on a deploy using host information",
-            response = Response.class)
+    @Operation(
+            summary = "Take a deploy action",
+            description = "Take an action on a deploy using host information")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
             idLocation = ResourceAuthZInfo.Location.PATH)
     public void update(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Agent object to update with", required = true)
+            @Parameter(description = "Agent object to update with", required = true)
                     @NotNull
                     @QueryParam("actionType")
                     HostActions actionType,
@@ -234,11 +233,10 @@ public class EnvDeploys {
     @POST
     @Timed
     @Counted
-    @ApiOperation(
-            value = "Create a deploy",
-            notes =
-                    "Creates a deploy given an environment name, stage name, build id and description",
-            response = Response.class)
+    @Operation(
+            summary = "Create a deploy",
+            description =
+                    "Creates a deploy given an environment name, stage name, build id and description")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
@@ -246,15 +244,15 @@ public class EnvDeploys {
     public Response create(
             @Context SecurityContext sc,
             @Context UriInfo uriInfo,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Build id", required = true) @NotEmpty @QueryParam("buildId")
+            @Parameter(description = "Build id", required = true) @NotEmpty @QueryParam("buildId")
                     String buildId,
-            @ApiParam(value = "Description", required = true) @QueryParam("description")
+            @Parameter(description = "Description", required = true) @QueryParam("description")
                     String description,
-            @ApiParam(value = "Delivery type", required = false) @QueryParam("deliveryType")
+            @Parameter(description = "Delivery type", required = false) @QueryParam("deliveryType")
                     String deliveryType)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -285,16 +283,15 @@ public class EnvDeploys {
     @Timed
     @Counted
     @Path("/current/progress")
-    @ApiOperation(
-            value = "Update deploy progress",
-            notes =
+    @Operation(
+            summary = "Update deploy progress",
+            description =
                     "Updates a deploy's progress given an environment name and stage name and returns a deploy "
-                            + "progress object",
-            response = DeployProgressBean.class)
+                            + "progress object")
     public DeployProgressBean updateProgress(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -310,15 +307,13 @@ public class EnvDeploys {
 
     @GET
     @Path("/current/missing-hosts")
-    @ApiOperation(
-            value = "Get missing hosts for stage",
-            notes = "Returns a list of missing hosts given an environment and stage",
-            response = String.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get missing hosts for stage",
+            description = "Returns a list of missing hosts given an environment and stage")
     public List<String> getMissingHosts(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);

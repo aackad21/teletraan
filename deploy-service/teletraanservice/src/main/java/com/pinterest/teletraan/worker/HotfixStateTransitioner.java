@@ -434,7 +434,7 @@ public class HotfixStateTransitioner implements Runnable {
                     }
                 } else {
                     throw new DeployInternalException(
-                            "Hotfix Id " + hotBean.getId() + " has unknown state " + state);
+                            "Hotfix Id %s has unknown state %s", hotBean.getId(), state);
                 }
             } finally {
                 utilDAO.releaseLock(hotfixLockName, connection);
@@ -503,7 +503,7 @@ public class HotfixStateTransitioner implements Runnable {
             LOG.info("Hotfix Id {} is finished and now in the SUCCEEDED state.", hotfixId);
         } else {
             throw new DeployInternalException(
-                    "Hotfix Id " + hotfixId + " has an unknown state " + state);
+                    "Hotfix Id %s has an unknown state %s", hotfixId, state);
         }
 
         // Reset job number and last worked on time, and clean up the error

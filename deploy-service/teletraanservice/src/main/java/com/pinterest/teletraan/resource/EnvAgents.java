@@ -22,7 +22,9 @@ import com.pinterest.deployservice.dao.EnvironDAO;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
@@ -36,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/agents")
-@Api(tags = "Agents")
+@Tag(name = "Agents", description = "Deploy agent information APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvAgents {
@@ -59,16 +61,14 @@ public class EnvAgents {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get deploy agents",
-            notes =
-                    "Returns a list of all the deploy agent objects for a given environment name and stage name",
-            response = AgentBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get deploy agents",
+            description =
+                    "Returns a list of all the deploy agent objects for a given environment name and stage name")
     public List<AgentBean> getAllAgents(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -77,17 +77,17 @@ public class EnvAgents {
 
     @GET
     @Path("/errors/{hostName : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get deploy agent error",
-            notes =
-                    "Returns an AgentError object given an environment name, stage name, and host name",
-            response = AgentErrorBean.class)
+    @Operation(
+            summary = "Get deploy agent error",
+            description =
+                    "Returns an AgentError object given an environment name, stage name, and host name")
     public AgentErrorBean getAgentError(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Host name", required = true) @PathParam("hostName") String hostName)
+            @Parameter(description = "Host name", required = true) @PathParam("hostName")
+                    String hostName)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
         AgentErrorBean agentErrorBean = agentErrorDAO.get(hostName, envBean.getEnv_id());
@@ -99,9 +99,9 @@ public class EnvAgents {
 
     @PUT
     @Path("/{hostId : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Update host agent",
-            notes =
+    @Operation(
+            summary = "Update host agent",
+            description =
                     "Updates host agent specified by given environment name, stage name, and host id with given "
                             + "agent object")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
@@ -110,12 +110,13 @@ public class EnvAgents {
             idLocation = ResourceAuthZInfo.Location.PATH)
     public void update(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Host id", required = true) @PathParam("hostId") String hostId,
-            @ApiParam(value = "Agent object to update with", required = true) AgentBean agentBean)
+            @Parameter(description = "Host id", required = true) @PathParam("hostId") String hostId,
+            @Parameter(description = "Agent object to update with", required = true)
+                    AgentBean agentBean)
             throws Exception {
         EnvironBean envBean = Utils.getEnvStage(environDAO, envName, stageName);
         String operator = sc.getUserPrincipal().getName();
@@ -131,20 +132,22 @@ public class EnvAgents {
 
     @PUT
     @Path("/reset_failed_agents/{deployId : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Reset failed deploys",
-            notes = "Resets failing deploys given an environment name, stage name, and deploy id")
+    @Operation(
+            summary = "Reset failed deploys",
+            description =
+                    "Resets failing deploys given an environment name, stage name, and deploy id")
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(
             type = AuthZResource.Type.ENV_STAGE,
             idLocation = ResourceAuthZInfo.Location.PATH)
     public void resetFailedDeploys(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Deploy id", required = true) @PathParam("deployId") String deployId)
+            @Parameter(description = "Deploy id", required = true) @PathParam("deployId")
+                    String deployId)
             throws Exception {
         EnvironBean environBean = Utils.getEnvStage(environDAO, envName, stageName);
         String operator = sc.getUserPrincipal().getName();

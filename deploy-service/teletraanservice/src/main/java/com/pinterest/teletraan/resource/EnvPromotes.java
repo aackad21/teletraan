@@ -26,9 +26,9 @@ import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo.Location;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/promotes")
-@Api(tags = "Environments")
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvPromotes {
@@ -56,33 +56,32 @@ public class EnvPromotes {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get promote info",
-            notes = "Returns a promote info object given environment and stage names",
-            response = PromoteBean.class)
+    @Operation(
+            summary = "Get promote info",
+            description = "Returns a promote info object given environment and stage names")
     public PromoteBean get(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         return environHandler.getEnvPromote(envName, stageName);
     }
 
     @PUT
-    @ApiOperation(
-            value = "Update promote info",
-            notes =
+    @Operation(
+            summary = "Update promote info",
+            description =
                     "Updates promote info given environment and stage names by given promote info object")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.PATH)
     public void update(
             @Context SecurityContext sc,
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "Promote object to update with", required = true) @Valid
+            @Parameter(description = "Promote object to update with", required = true) @Valid
                     PromoteBean promoteBean)
             throws Exception {
         EnvironBean environBean = Utils.getEnvStage(environDAO, envName, stageName);

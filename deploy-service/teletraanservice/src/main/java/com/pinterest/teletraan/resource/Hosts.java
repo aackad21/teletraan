@@ -25,7 +25,9 @@ import com.pinterest.deployservice.handler.EnvironHandler;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -39,11 +41,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/hosts")
-@Api(tags = "Hosts and Systems")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Hosts and Systems", description = "Host info APIs"),
-        })
+@Tag(name = "Hosts and Systems", description = "Host info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Hosts {
@@ -59,9 +57,9 @@ public class Hosts {
     @POST
     @RolesAllowed(TeletraanPrincipalRole.Names.EXECUTE)
     @ResourceAuthZInfo(type = AuthZResource.Type.SYSTEM)
-    @ApiOperation(
-            value = "Add a host",
-            notes =
+    @Operation(
+            summary = "Add a host",
+            description =
                     "Add a host to the system. Should be only called by Rodimus that's why it requires SYSTEM permission.")
     public void addHost(@Context SecurityContext sc, @Valid HostBean hostBean) throws Exception {
         String operator = sc.getUserPrincipal().getName();
@@ -103,7 +101,7 @@ public class Hosts {
     public void stopHost(
             @Context SecurityContext sc,
             @PathParam("hostId") String hostId,
-            @ApiParam(value = "Replace the host or not") @QueryParam("replaceHost")
+            @Parameter(description = "Replace the host or not") @QueryParam("replaceHost")
                     Optional<Boolean> replaceHost)
             throws Exception {
         String operator = sc.getUserPrincipal().getName();
@@ -113,13 +111,12 @@ public class Hosts {
 
     @GET
     @Path("/{hostName : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get host info objects by host name",
-            notes = "Returns a list of host info objects given a host name",
-            response = HostBean.class,
-            responseContainer = "List")
+    @Operation(
+            summary = "Get host info objects by host name",
+            description = "Returns a list of host info objects given a host name")
     public List<HostBeanWithStatuses> get(
-            @ApiParam(value = "Host name", required = true) @PathParam("hostName") String hostName)
+            @Parameter(description = "Host name", required = true) @PathParam("hostName")
+                    String hostName)
             throws Exception {
         return hostDAO.getHosts(hostName);
     }
@@ -132,9 +129,9 @@ public class Hosts {
 
     @POST
     @Path("/active")
-    @ApiOperation(
-            value = "Get active host ids by host ids",
-            notes =
+    @Operation(
+            summary = "Get active host ids by host ids",
+            description =
                     "Checks if hosts are active in the Teletraan service by it's id. POST operation because host ids may be too long for a GET request.")
     public Collection<String> getActiveHostsIdsByIds(Collection<String> hostIds) throws Exception {
         return hostDAO.getActiveHostIdsByHostIds(hostIds);

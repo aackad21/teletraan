@@ -26,6 +26,7 @@ import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
+import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -113,14 +114,7 @@ public class TeletraanService extends Application<TeletraanServiceConfiguration>
         environment.jersey().register(PrincipalNameInjector.class);
 
         // Swagger API docs generation related
-        OpenAPI openApi =
-                new OpenAPI().info(new Info().title("Teletraan API Docs").version("1.0.0"));
-        SwaggerConfiguration openApiConfig =
-                new SwaggerConfiguration()
-                        .openAPI(openApi)
-                        .prettyPrint(true)
-                        .resourcePackages(Set.of("com.pinterest.teletraan.resource"));
-        new JaxrsOpenApiContextBuilder<>().openApiConfiguration(openApiConfig).buildContext(true);
+        buildOpenApiContext();
         environment.jersey().register(SecureApiListingResource.class);
 
         // Enable CORS headers
@@ -135,6 +129,21 @@ public class TeletraanService extends Application<TeletraanServiceConfiguration>
                 "allowedHeaders",
                 "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
         filter.setInitParameter("allowCredentials", "true");
+    }
+
+    /**
+     * Builds the default OpenAPI context that backs /swagger.json and /swagger.yaml, scanning the
+     * resource package for OpenAPI v3 annotations.
+     */
+    public static void buildOpenApiContext() throws OpenApiConfigurationException {
+        OpenAPI openApi =
+                new OpenAPI().info(new Info().title("Teletraan API Docs").version("1.0.0"));
+        SwaggerConfiguration openApiConfig =
+                new SwaggerConfiguration()
+                        .openAPI(openApi)
+                        .prettyPrint(true)
+                        .resourcePackages(Set.of("com.pinterest.teletraan.resource"));
+        new JaxrsOpenApiContextBuilder<>().openApiConfiguration(openApiConfig).buildContext(true);
     }
 
     public static void main(String[] args) throws Exception {

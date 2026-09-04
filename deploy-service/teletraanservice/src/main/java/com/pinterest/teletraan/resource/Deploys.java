@@ -32,11 +32,9 @@ import com.pinterest.teletraan.universal.security.ResourceAuthZInfo.Location;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -56,11 +54,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/deploys")
-@Api(tags = "Deploys")
-@SwaggerDefinition(
-        tags = {
-            @Tag(name = "Deploys", description = "Deploy info APIs"),
-        })
+@Tag(name = "Deploys", description = "Deploy info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Deploys {
@@ -78,12 +72,11 @@ public class Deploys {
     @Timed
     @Counted
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Get deploy info",
-            notes = "Returns a deploy object given a deploy id",
-            response = DeployBean.class)
+    @Operation(
+            summary = "Get deploy info",
+            description = "Returns a deploy object given a deploy id")
     public DeployBean get(
-            @ApiParam(value = "Deploy id", required = true) @PathParam("id") String id)
+            @Parameter(description = "Deploy id", required = true) @PathParam("id") String id)
             throws Exception {
         DeployBean deployBean = deployDAO.getById(id);
         if (deployBean == null) {
@@ -133,17 +126,17 @@ public class Deploys {
     @Timed
     @Counted
     @Path("/{id : [a-zA-Z0-9\\-_]+}")
-    @ApiOperation(
-            value = "Update deploy",
-            notes =
+    @Operation(
+            summary = "Update deploy",
+            description =
                     "Update deploy given a deploy id and a deploy object. Current only "
                             + "acceptanceStatus and description are allowed to change.")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.DEPLOY, idLocation = Location.PATH)
     public void update(
             @Context SecurityContext sc,
-            @ApiParam(value = "Deploy id", required = true) @PathParam("id") String id,
-            @ApiParam(value = "Partially populated deploy object", required = true)
+            @Parameter(description = "Deploy id", required = true) @PathParam("id") String id,
+            @Parameter(description = "Partially populated deploy object", required = true)
                     DeployBean deployBean)
             throws Exception {
         String userName = sc.getUserPrincipal().getName();
@@ -153,7 +146,7 @@ public class Deploys {
 
     private void delete(
             @Context SecurityContext sc,
-            @ApiParam(value = "Deploy id", required = true) @PathParam("id") String id)
+            @Parameter(description = "Deploy id", required = true) @PathParam("id") String id)
             throws Exception {
         String userName = sc.getUserPrincipal().getName();
         deployDAO.delete(id);
@@ -162,10 +155,9 @@ public class Deploys {
 
     @GET
     @Path("/dailycount")
-    @ApiOperation(
-            value = "Get deploys per day",
-            notes = "Get total numbers of deploys on the current day",
-            response = Long.class)
+    @Operation(
+            summary = "Get deploys per day",
+            description = "Get total numbers of deploys on the current day")
     public long dailyCount() throws Exception {
         return deployDAO.getDailyDeployCount();
     }

@@ -26,9 +26,9 @@ import com.pinterest.teletraan.TeletraanServiceContext;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfo.Location;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 @RolesAllowed(TeletraanPrincipalRole.Names.READ)
 @Path("/v1/envs/{envName : [a-zA-Z0-9\\-_]+}/{stageName : [a-zA-Z0-9\\-_]+}/metrics")
-@Api(tags = "Environments")
+@Tag(name = "Environments", description = "Environment info APIs")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EnvMetrics {
@@ -60,17 +60,15 @@ public class EnvMetrics {
     }
 
     @GET
-    @ApiOperation(
-            value = "Get environment metrics",
-            notes =
+    @Operation(
+            summary = "Get environment metrics",
+            description =
                     "Returns a list of MetricsConfig object containing details for environment metrics gauges given "
-                            + "an environment name and stage name",
-            response = MetricsConfigBean.class,
-            responseContainer = "List")
+                            + "an environment name and stage name")
     public List<MetricsConfigBean> get(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName)
             throws Exception {
         EnvironBean environBean = Utils.getEnvStage(environDAO, envName, stageName);
@@ -78,19 +76,19 @@ public class EnvMetrics {
     }
 
     @PUT
-    @ApiOperation(
-            value = "Update environment metrics",
-            notes =
+    @Operation(
+            summary = "Update environment metrics",
+            description =
                     "Updates an environment's metrics configs given an environment name, stage name, and list of "
                             + "MetricsConfig objects to update with")
     @RolesAllowed(TeletraanPrincipalRole.Names.WRITE)
     @ResourceAuthZInfo(type = AuthZResource.Type.ENV_STAGE, idLocation = Location.PATH)
     public void update(
-            @ApiParam(value = "Environment name", required = true) @PathParam("envName")
+            @Parameter(description = "Environment name", required = true) @PathParam("envName")
                     String envName,
-            @ApiParam(value = "Stage name", required = true) @PathParam("stageName")
+            @Parameter(description = "Stage name", required = true) @PathParam("stageName")
                     String stageName,
-            @ApiParam(value = "List of MetricsConfigBean objects", required = true) @Valid
+            @Parameter(description = "List of MetricsConfigBean objects", required = true) @Valid
                     List<MetricsConfigBean> metrics,
             @Context SecurityContext sc)
             throws Exception {
