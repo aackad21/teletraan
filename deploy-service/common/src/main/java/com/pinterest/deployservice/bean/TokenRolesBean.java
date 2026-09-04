@@ -17,9 +17,9 @@ package com.pinterest.deployservice.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import javax.annotation.Nonnull;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class TokenRolesBean implements Updatable {

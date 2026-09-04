@@ -28,14 +28,14 @@ import com.pinterest.deployservice.fixture.EnvironBeanFixture;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.Principal;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -64,7 +64,7 @@ class EnvStagesTest {
     }
 
     public static class SecurityContextProvider
-            implements javax.ws.rs.ext.Provider, javax.ws.rs.core.Feature {
+            implements jakarta.ws.rs.ext.Provider, jakarta.ws.rs.core.Feature {
         private final SecurityContext securityContext;
 
         public SecurityContextProvider(SecurityContext securityContext) {
@@ -72,9 +72,9 @@ class EnvStagesTest {
         }
 
         @Override
-        public boolean configure(javax.ws.rs.core.FeatureContext context) {
+        public boolean configure(jakarta.ws.rs.core.FeatureContext context) {
             context.register(
-                    (javax.ws.rs.container.ContainerRequestFilter)
+                    (jakarta.ws.rs.container.ContainerRequestFilter)
                             requestContext -> {
                                 requestContext.setSecurityContext(securityContext);
                             });

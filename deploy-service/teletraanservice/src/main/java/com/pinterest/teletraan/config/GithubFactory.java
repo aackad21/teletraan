@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pinterest.deployservice.scm.GithubManager;
 import com.pinterest.deployservice.scm.SourceControlManager;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @JsonTypeName("github")
 public class GithubFactory implements SourceControlFactory {

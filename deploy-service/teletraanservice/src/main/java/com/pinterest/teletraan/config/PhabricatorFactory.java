@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.pinterest.deployservice.scm.PhabricatorManager;
 import com.pinterest.deployservice.scm.SourceControlManager;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @JsonTypeName("phabricator")
 public class PhabricatorFactory implements SourceControlFactory {

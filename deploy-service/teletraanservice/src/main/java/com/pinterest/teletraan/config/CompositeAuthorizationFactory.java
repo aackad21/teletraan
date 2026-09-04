@@ -24,7 +24,7 @@ import com.pinterest.teletraan.universal.security.TeletraanAuthorizer;
 import com.pinterest.teletraan.universal.security.bean.ScriptTokenPrincipal;
 import com.pinterest.teletraan.universal.security.bean.TeletraanPrincipal;
 import io.dropwizard.auth.Authorizer;
-import javax.ws.rs.ForbiddenException;
+import jakarta.ws.rs.ForbiddenException;
 
 @JsonTypeName("composite")
 public class CompositeAuthorizationFactory implements AuthorizationFactory {

@@ -50,7 +50,7 @@ public class HostTerminatorTest {
     private RodimusManager mockRodimusManager;
     private UtilDAO mockUtilDAO;
 
-    private Collection<String> testHostIds = Collections.singletonList(TEST_HOST_ID);;
+    private Collection<String> testHostIds = Collections.singletonList(TEST_HOST_ID);
     private AgentBean testAgentBean;
     private HostAgentBean testHostAgentBean;
     private HostBean testHostBean;

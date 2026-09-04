@@ -32,9 +32,9 @@ import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.auth.JSONUnauthorizedHandler;
 import io.dropwizard.auth.chained.ChainedAuthFilter;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 import java.util.Arrays;
 import java.util.List;
-import javax.ws.rs.container.ContainerRequestFilter;
 import org.apache.commons.lang3.StringUtils;
 
 @JsonTypeName("composite")

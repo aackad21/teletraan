@@ -61,7 +61,7 @@ public class BuildTagsManagerImpl implements BuildTagsManager {
                                     }
                                     return new ArrayList<BuildTagBean>();
                                 }
-                            });;
+                            });
 
     public BuildTagsManagerImpl(TagDAO t) {
         this.tagDAO = t;

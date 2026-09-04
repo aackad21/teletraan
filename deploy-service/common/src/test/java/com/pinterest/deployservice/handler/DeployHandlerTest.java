@@ -34,8 +34,8 @@ import com.pinterest.deployservice.bean.EnvType;
 import com.pinterest.deployservice.bean.EnvironBean;
 import com.pinterest.deployservice.common.InvalidBuildException;
 import com.pinterest.deployservice.dao.BuildDAO;
+import jakarta.ws.rs.WebApplicationException;
 import java.util.ArrayList;
-import javax.ws.rs.WebApplicationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

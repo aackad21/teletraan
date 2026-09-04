@@ -16,7 +16,7 @@
 package com.pinterest.teletraan.universal.security;
 
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
-import javax.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestContext;
 
 /**
  * This interface represents an AuthZResourceExtractor, which is responsible for extracting an

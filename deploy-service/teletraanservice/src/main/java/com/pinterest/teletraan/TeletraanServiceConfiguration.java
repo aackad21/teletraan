@@ -38,10 +38,10 @@ import com.pinterest.teletraan.config.SourceControlFactory;
 import com.pinterest.teletraan.config.SystemFactory;
 import com.pinterest.teletraan.config.UdmDataUpdateServiceFactory;
 import com.pinterest.teletraan.config.WorkerConfig;
-import io.dropwizard.Configuration;
+import io.dropwizard.core.Configuration;
+import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import javax.validation.Valid;
 
 public class TeletraanServiceConfiguration extends Configuration {
     @Valid

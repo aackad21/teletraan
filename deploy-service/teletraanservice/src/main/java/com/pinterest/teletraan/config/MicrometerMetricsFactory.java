@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pinterest.teletraan.universal.metrics.micrometer.PinStatsConfig;
 import com.pinterest.teletraan.universal.metrics.micrometer.PinStatsMeterRegistry;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
-import io.dropwizard.metrics.MetricsFactory;
+import io.dropwizard.metrics.common.MetricsFactory;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Metrics;
 

@@ -20,9 +20,9 @@ import com.pinterest.deployservice.bean.EnvironBean;
 import com.pinterest.deployservice.dao.EnvironDAO;
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.sql.SQLException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.container.ContainerRequestContext;
 
 /**
  * The authentication and authorization resource is extracted based on the deploy ID present in the

@@ -72,7 +72,7 @@ import com.pinterest.teletraan.worker.HostTerminator;
 import com.pinterest.teletraan.worker.HotfixStateTransitioner;
 import com.pinterest.teletraan.worker.MetricsEmitter;
 import com.pinterest.teletraan.worker.StateTransitioner;
-import io.dropwizard.setup.Environment;
+import io.dropwizard.core.setup.Environment;
 import io.dropwizard.util.Duration;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;

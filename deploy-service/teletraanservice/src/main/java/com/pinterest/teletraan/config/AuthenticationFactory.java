@@ -18,7 +18,7 @@ package com.pinterest.teletraan.config;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.pinterest.teletraan.TeletraanServiceContext;
 import io.dropwizard.jackson.Discoverable;
-import javax.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public interface AuthenticationFactory extends Discoverable {

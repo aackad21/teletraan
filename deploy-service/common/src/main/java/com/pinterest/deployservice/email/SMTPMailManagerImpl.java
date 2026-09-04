@@ -15,10 +15,10 @@
  */
 package com.pinterest.deployservice.email;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +40,7 @@ public class SMTPMailManagerImpl implements MailManager {
      * usually <tt>localhost</tt>.
      */
     private String host;
+
     /**
      * The SMTP port to use for sending e-mail. Null for default to the environment, which is
      * usually <tt>25</tt>.

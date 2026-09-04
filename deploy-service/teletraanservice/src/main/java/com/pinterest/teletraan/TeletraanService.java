@@ -19,17 +19,20 @@ import com.pinterest.teletraan.health.GenericHealthCheck;
 import com.pinterest.teletraan.resource.*;
 import com.pinterest.teletraan.universal.security.PrincipalNameInjector;
 import com.pinterest.teletraan.universal.security.ResourceAuthZInfoFeature;
-import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.jaxrs.listing.SwaggerSerializers;
+import io.dropwizard.core.Application;
+import io.dropwizard.core.setup.Bootstrap;
+import io.dropwizard.core.setup.Environment;
+import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration;
 import java.util.EnumSet;
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
+import java.util.Set;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
@@ -110,16 +113,17 @@ public class TeletraanService extends Application<TeletraanServiceConfiguration>
         environment.jersey().register(PrincipalNameInjector.class);
 
         // Swagger API docs generation related
+        OpenAPI openApi =
+                new OpenAPI().info(new Info().title("Teletraan API Docs").version("1.0.0"));
+        SwaggerConfiguration openApiConfig =
+                new SwaggerConfiguration()
+                        .openAPI(openApi)
+                        .prettyPrint(true)
+                        .resourcePackages(Set.of("com.pinterest.teletraan.resource"));
+        new JaxrsOpenApiContextBuilder<>().openApiConfiguration(openApiConfig).buildContext(true);
         environment.jersey().register(SecureApiListingResource.class);
-        environment.jersey().register(SwaggerSerializers.class);
-        BeanConfig config = new BeanConfig();
-        config.setTitle("Teletraan API Docs");
-        config.setVersion("1.0.0");
-        config.setResourcePackage("com.pinterest.teletraan.resource");
-        config.setScan(true);
 
         // Enable CORS headers
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
         FilterRegistration.Dynamic filter =
                 environment.servlets().addFilter("CORS", CrossOriginFilter.class);
         filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");

@@ -21,8 +21,8 @@ import com.pinterest.teletraan.universal.security.BaseAuthorizer;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
 import com.pinterest.teletraan.universal.security.bean.ScriptTokenPrincipal;
 import com.pinterest.teletraan.universal.security.bean.ValueBasedRole;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import javax.annotation.Nullable;
-import javax.ws.rs.container.ContainerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

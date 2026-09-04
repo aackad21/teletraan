@@ -54,6 +54,7 @@ public class HostBean implements Updatable {
 
     @JsonProperty("canRetire")
     private Integer can_retire;
+
     // canRetire used to be a Boolean field
     // canRetire now represent the state `HostCanRetireType'
     // which can be:

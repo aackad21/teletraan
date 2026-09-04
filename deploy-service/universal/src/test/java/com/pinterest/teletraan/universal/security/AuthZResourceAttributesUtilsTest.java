@@ -21,9 +21,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.container.ContainerRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

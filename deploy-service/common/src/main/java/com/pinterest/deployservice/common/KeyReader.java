@@ -23,6 +23,8 @@ public interface KeyReader {
      */
     public void init(String key);
 
-    /** @return a key string */
+    /**
+     * @return a key string
+     */
     public String getKey();
 }

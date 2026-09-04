@@ -19,9 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pinterest.deployservice.bean.BuildBean;
 import com.pinterest.teletraan.universal.security.AuthZResourceExtractor;
 import com.pinterest.teletraan.universal.security.bean.AuthZResource;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import java.io.InputStream;
 import java.util.HashMap;
-import javax.ws.rs.container.ContainerRequestContext;
 import org.glassfish.jersey.server.ContainerRequest;
 
 public class BuildBodyExtractor implements AuthZResourceExtractor {
